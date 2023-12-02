@@ -21,4 +21,5 @@ $ python -m uvicorn main2:app --port 8080 --reload
 ```
 
 上記でuvicorn起動後、以下にアクセスするとswagger画面が開きます。
+
 http://localhost:8080/docs
