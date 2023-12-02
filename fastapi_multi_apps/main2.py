@@ -5,8 +5,8 @@ from app_manager import FastAPIAppManager
 
 # appを定義
 app = FastAPI(title="App")
-feature_app = FastAPI(title="FeatureApp")
-admin_app = FastAPI(title="AdminApp")
+feature_app = FastAPI()
+admin_app = FastAPI()
 app_manager = FastAPIAppManager(root_app=app)
 
 

@@ -3,8 +3,8 @@ from fastapi import FastAPI
 
 # appを定義
 app = FastAPI(title="App")
-feature_app = FastAPI(title="FeatureApp")
-admin_app = FastAPI(title="AdminApp")
+feature_app = FastAPI(title="App(/feature)")
+admin_app = FastAPI(title="App(/admin)")
 
 
 # Path関数を定義
