@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 
-
 # appを定義
 app = FastAPI(title="App")
 feature_app = FastAPI(title="App(/feature)")

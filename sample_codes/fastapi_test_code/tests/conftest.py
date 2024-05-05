@@ -7,6 +7,7 @@ from typing import Any, Generator
 import pytest
 from app.db import Base, get_db
 from app.main import app
+from app.models.models import User
 from fastapi.testclient import TestClient
 from pytest_postgresql import factories
 from sqlalchemy import create_engine
@@ -30,8 +31,10 @@ def db(
     # 接続URIを作成
     uri = (
         f"postgresql://"
-        f"{postgresql_fixture.info.user}:@{postgresql_fixture.info.host}:{postgresql_fixture.info.port}"
-        f"/{postgresql_fixture.info.dbname}"
+        f"{postgresql_fixture.info.user}:"  # id:pass
+        f"@{postgresql_fixture.info.host}"  # host
+        f":{postgresql_fixture.info.port}"  # port
+        f"/{postgresql_fixture.info.dbname}"  # dbname
     )
 
     # engineを作成
@@ -42,16 +45,18 @@ def db(
     SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
     # Sessionを生成
-    db: Session = None
+    db: Session | None = None
     try:
         db = SessionFactory()
         yield db
         db.commit()
     except Exception:
-        db.rollback()
+        if db:
+            db.rollback()
     finally:
         # teardown
-        db.close()
+        if db:
+            db.close()
 
 
 @pytest.fixture
@@ -71,3 +76,16 @@ def client(db: Session):
     app.dependency_overrides[get_db] = override_get_db
 
     yield TestClient(app)
+
+
+# 全てのテストで使用しうるようなDBの初期データは、rootのconftest.pyに定義することで、全てのテストのfixtureとして使用できる
+@pytest.fixture
+def setup_db_users(db: Session) -> None:
+    """テスト用DBに初期データを投入するFixture"""
+    _insert_users(db)
+
+
+def _insert_users(db: Session) -> None:
+    data = [User(name=f"user_{i}") for i in range(1, 4)]
+    db.add_all(data)
+    db.commit()

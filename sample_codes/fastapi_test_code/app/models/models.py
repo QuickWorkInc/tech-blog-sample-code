@@ -40,3 +40,21 @@ class Feature2Sample(Base):
         onupdate=current_timestamp(),
         nullable=False,
     )
+
+
+class User(Base):
+    """user用のサンプルテーブル"""
+
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(TEXT)
+    created_at = Column(
+        DateTime(True), server_default=current_timestamp(), nullable=False
+    )
+    updated_at = Column(
+        DateTime(True),
+        server_default=current_timestamp(),
+        onupdate=current_timestamp(),
+        nullable=False,
+    )

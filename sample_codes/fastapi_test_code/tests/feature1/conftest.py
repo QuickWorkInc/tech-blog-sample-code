@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 
 @pytest.fixture
-def setup_db_for_test_feature1(db: Session) -> None:
+def setup_db_for_test_feature1(db: Session, setup_db_users: None) -> None:
     _insert_feature1_sample(db)
 
 

@@ -1,7 +1,5 @@
-from fastapi import FastAPI
-
 from app_manager import FastAPIAppManager
-
+from fastapi import FastAPI
 
 # appを定義
 app = FastAPI(title="App")
